@@ -4,8 +4,48 @@ async function initApp() {
   if (!r.success) { localStorage.removeItem('token'); location.href = 'index.html'; return; }
   user = r.data;
   document.getElementById('userName').innerText = user.username + (user.role === 'admin' ? ' [管理员]' : '');
-  if (user.role === 'admin') document.getElementById('navUsers').style.display = '';
-  else document.getElementById('navUsers').style.display = 'none';
+  if (user.role === 'admin') {
+    document.getElementById('navUsers').style.display = '';
+    // 导出按钮
+    let btnExport = document.getElementById('btnExportData');
+    if (!btnExport) {
+      btnExport = document.createElement('button');
+      btnExport.className = 'btn mini';
+      btnExport.id = 'btnExportData';
+      btnExport.innerHTML = '<i class="fas fa-file-excel"></i> 导出数据';
+      btnExport.style.marginLeft = '1em';
+      document.querySelector('nav').appendChild(btnExport);
+    }
+    btnExport.style.display = '';
+    btnExport.onclick = async () => {
+      try {
+        const res = await fetch('/api/export', {
+          headers: { Authorization: 'Bearer ' + (localStorage.getItem('token')||'') }
+        });
+        if (!res.ok) {
+          const err = await res.json();
+          return Swal.fire({icon:'error',title: err.message || '导出失败', confirmButtonText:'确定'});
+        }
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'export.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(()=>{
+          window.URL.revokeObjectURL(url);
+          a.remove();
+        }, 500);
+      } catch (e) {
+        Swal.fire({icon:'error',title:'导出失败', confirmButtonText:'确定'});
+      }
+    };
+  } else {
+    document.getElementById('navUsers').style.display = 'none';
+    let btnExport = document.getElementById('btnExportData');
+    if (btnExport) btnExport.style.display = 'none';
+  }
   showTab('visits');
 }
 function showTab(tab) {

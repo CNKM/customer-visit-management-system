@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
+const ExcelJS = require('exceljs');
 
 const app = express();
 app.use(express.json());
@@ -281,6 +282,102 @@ app.get('/api/me', auth(), (req, res) => {
   users.findOne({ _id: req.user.id }, (err, u) => {
     res.json({ success: true, data: u });
   });
+});
+
+// 管理员导出所有用户及拜访信息为 xlsx（美观、汇总、无技术字段）
+app.get('/api/export', auth('admin'), async (req, res) => {
+  try {
+    users.find({ role: 'user' }, async (err, userList) => {
+      if (err) return sendErr(res, '用户查询失败');
+      visits.find({}, async (err, visitList) => {
+        if (err) return sendErr(res, '拜访查询失败');
+        // 统计数据
+        const stat = { total: visitList.length, draft: 0, submitted: 0, feedback: 0 };
+        visitList.forEach(x => stat[x.status]++);
+        const activeUsers = userList.filter(u => u.status === 'active').length;
+        // 用户ID到用户名映射
+        const userMap = {};
+        userList.forEach(u => userMap[u._id] = u.username);
+        // 创建工作簿
+        const wb = new ExcelJS.Workbook();
+        wb.creator = '系统自动导出';
+        wb.created = new Date();
+        // 汇总sheet
+        const sumSheet = wb.addWorksheet('汇总', {properties:{tabColor:{argb:'FF4CAF50'}}});
+        sumSheet.addRow(['用户总数', userList.length]);
+        sumSheet.addRow(['激活用户数', activeUsers]);
+        sumSheet.addRow(['拜访总数', stat.total]);
+        sumSheet.addRow(['草稿拜访数', stat.draft]);
+        sumSheet.addRow(['已提交拜访数', stat.submitted]);
+        sumSheet.addRow(['已反馈拜访数', stat.feedback]);
+        sumSheet.getColumn(1).width = 16;
+        sumSheet.getColumn(2).width = 12;
+        sumSheet.eachRow(r=>{r.font={bold:true};r.alignment={vertical:'middle',horizontal:'center'};});
+        sumSheet.getCell('A1').fill = {type:'pattern',pattern:'solid',fgColor:{argb:'FF2196F3'}};
+        // 用户信息sheet
+        const userSheet = wb.addWorksheet('用户信息', {properties:{tabColor:{argb:'FF4CAF50'}}});
+        userSheet.columns = [
+          { header: '用户名', key: 'username', width: 18 },
+          { header: '状态', key: 'status', width: 12 },
+          { header: '上级', key: 'superiorName', width: 18 }
+        ];
+        userSheet.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
+        userSheet.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF4CAF50' } };
+        userList.forEach(u => {
+          userSheet.addRow({
+            username: u.username,
+            status: u.status === 'active' ? '已激活' : u.status === 'pending' ? '待激活' : '已禁用',
+            superiorName: userMap[u.superiorId] || ''
+          });
+        });
+        // 拜访信息sheet
+        const visitSheet = wb.addWorksheet('拜访信息', {properties:{tabColor:{argb:'FF2196F3'}}});
+        visitSheet.columns = [
+          { header: '标题', key: 'title', width: 18 },
+          { header: '客户', key: 'customer', width: 18 },
+          { header: '计划日期', key: 'planDate', width: 14 },
+          { header: '状态', key: 'status', width: 12 },
+          { header: '反馈', key: 'feedback', width: 24 },
+          { header: '创建人', key: 'creatorName', width: 18 },
+          { header: '创建时间', key: 'createdAt', width: 20 }
+        ];
+        visitSheet.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
+        visitSheet.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF2196F3' } };
+        visitList.forEach(v => {
+          visitSheet.addRow({
+            title: v.title,
+            customer: v.customer,
+            planDate: v.planDate,
+            status: v.status === 'draft' ? '草稿' : v.status === 'submitted' ? '已提交' : '已反馈',
+            feedback: v.feedback || '',
+            creatorName: userMap[v.creator] || '',
+            createdAt: v.createdAt ? new Date(v.createdAt).toLocaleString() : ''
+          });
+        });
+        // 美化边框
+        [userSheet, visitSheet].forEach(sheet => {
+          sheet.eachRow((row, rowNum) => {
+            row.eachCell(cell => {
+              cell.border = {
+                top: {style:'thin', color:{argb:'FFCCCCCC'}},
+                left: {style:'thin', color:{argb:'FFCCCCCC'}},
+                bottom: {style:'thin', color:{argb:'FFCCCCCC'}},
+                right: {style:'thin', color:{argb:'FFCCCCCC'}}
+              };
+              cell.alignment = {vertical:'middle',horizontal:'center'};
+            });
+          });
+        });
+        // 导出
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.setHeader('Content-Disposition', 'attachment; filename="export.xlsx"');
+        await wb.xlsx.write(res);
+        res.end();
+      });
+    });
+  } catch (e) {
+    sendErr(res, '导出失败');
+  }
 });
 
 app.listen(PORT, () => console.log(' Server running on http://localhost:' + PORT));

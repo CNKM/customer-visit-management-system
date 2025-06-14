@@ -314,7 +314,7 @@ textarea { min-height: 80px; background: #181818; color: #fff; border: 1.5px sol
 }
 .swal-form-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center; /* 垂直居中 */
   margin-bottom: 1em;
   gap: 1em;
 }
@@ -327,6 +327,7 @@ textarea { min-height: 80px; background: #181818; color: #fff; border: 1.5px sol
   font-size: 1em;
   line-height: 2.1em;
   margin-top: 0;
+  align-self: center; /* 垂直居中 */
 }
 .swal2-input, .swal2-textarea { 
   margin-bottom: 0 !important;

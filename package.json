@@ -5,7 +5,7 @@
   "author": "GitHub Copilot",
   "license": "MIT",
   "main": "server.js",
-    "keywords": [
+  "keywords": [
     "crm",
     "visit",
     "management",
@@ -19,9 +19,9 @@
     "@seald-io/nedb": "^4.1.1",
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.0.3",
+    "exceljs": "^4.4.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "nedb": "^1.8.0",
     "uuid": "^11.1.0"
   }
 }
