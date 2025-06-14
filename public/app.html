@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <title>客户拜访管理系统</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.font.im/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <header>
+    <div class="logo">客户拜访管理系统</div>
+    <div class="user-info">
+      <span id="userName"></span>
+      <button id="btnLogout" class="btn danger mini"><i class="fas fa-sign-out-alt"></i> 退出</button>
+    </div>
+  </header>
+  <main>
+    <nav>
+      <button class="nav-btn" data-tab="visits">拜访记录</button>
+      <button class="nav-btn" data-tab="users" id="navUsers" style="display:none">用户管理</button>
+      <button class="nav-btn" data-tab="pw">修改密码</button>
+    </nav>
+    <section id="tabVisits"></section>
+    <section id="tabUsers" style="display:none"></section>
+    <section id="tabPw" style="display:none"></section>
+  </main>
+  <footer>
+    © 2025 客户拜访管理系统
+  </footer>
+  <script src="js/utils.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/visits.js"></script>
+  <script src="js/users.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>客户拜访管理系统 - 登录</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.font.im/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <div class="banner-green">
+    <span class="banner-title">客户拜访管理系统</span>
+  </div>
+  <div class="login-card card">
+    <form id="loginForm" autocomplete="off">
+      <h2 class="login-title">登录系统</h2>
+      <input type="text" name="username" placeholder="用户名" required autocomplete="off">
+      <input type="password" name="password" placeholder="密码" required autocomplete="current-password">
+      <button type="submit" class="btn primary full">登录</button>
+    </form>
+    <button type="button" id="btnRegister" class="btn outlined full">新用户注册</button>
+  </div>
+  <footer>
+    © 2025 客户拜访管理系统
+  </footer>
+  <script src="js/utils.js"></script>
+  <script>
+    document.getElementById('loginForm').onsubmit = async e => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const username = fd.get('username').trim(), password = fd.get('password');
+      if (!username || !password)
+        return Swal.fire({icon:'error',title:'请输入用户名和密码',confirmButtonText:'确定'});
+      Swal.showLoading();
+      const r = await post('/api/login', { username, password });
+      Swal.close();
+      if (r.success) {
+        localStorage.setItem('token', r.token);
+        location.href = 'app.html';
+      } else {
+        let errMsg = r.message || '登录失败';
+        if(/待激活|pending/i.test(errMsg)) errMsg = '账号待激活，请联系管理员';
+        if(/禁用|disabled/i.test(errMsg)) errMsg = '账号已禁用';
+        Swal.fire({icon:'error',title: errMsg, confirmButtonText:'确定'});
+      }
+    };
+    document.getElementById('btnRegister').onclick = () => {
+      Swal.fire({
+        title: '新用户注册',
+        html: `
+        <div class="swal-form-row"><label>用户名</label><input id="regUsername" class="swal2-input" autocomplete="off"></div>
+        <div class="swal-form-row"><label>密码</label><input id="regPassword" type="password" class="swal2-input" autocomplete="new-password"></div>
+        `,
+        confirmButtonText: '注册',
+        cancelButtonText: '取消',
+        showCancelButton: true,
+        focusConfirm: false,
+        customClass: { popup: 'swal2-popup-wide' },
+        preConfirm: () => {
+          const username = document.getElementById('regUsername').value.trim();
+          const password = document.getElementById('regPassword').value;
+          if (!username || !password) return Swal.showValidationMessage('请输入用户名和密码');
+          if (password.length < 6) return Swal.showValidationMessage('密码至少6位');
+          return { username, password };
+        }
+      }).then(async r => {
+        if (r.isConfirmed) {
+          Swal.showLoading();
+          const res = await post('/api/register', r.value);
+          Swal.close();
+          if (res.success) {
+            Swal.fire({icon:'success',title:'注册成功，请等待管理员激活',confirmButtonText:'确定'});
+          } else {
+            Swal.fire({icon:'error',title: res.message || '注册失败', confirmButtonText:'确定'});
+          }
+        }
+      });
+    };
+    document.querySelector('#loginForm input').focus();
+  </script>
+</body>
+</html>
