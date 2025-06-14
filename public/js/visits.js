@@ -83,17 +83,26 @@ async function showVisitDetail(id){
   const v = r.data;
   Swal.fire({
     title: '拜访详情',
-    html: `
-      <div class="swal-form-col">
-        <div class="swal-form-row"><label>标题</label><div style="flex:1;">${v.title}</div></div>
-        <div class="swal-form-row"><label>客户</label><div style="flex:1;">${v.customer}</div></div>
-        <div class="swal-form-row"><label>计划日期</label><div style="flex:1;">${v.planDate}</div></div>
-        <div class="swal-form-row"><label>状态</label><div style="flex:1;">${showStatus(v.status)}</div></div>
-        <div class="swal-form-row"><label>创建者</label><div style="flex:1;">${v.creatorName}</div></div>
-        <div class="swal-form-row"><label>描述</label><div style="flex:1;white-space:pre-line;">${v.desc||'-'}</div></div>
-        <div class="swal-form-row"><label>反馈</label><div style="flex:1;white-space:pre-line;">${v.feedback||'-'}</div></div>
-      </div>
-    `,
+   html: `
+  <div class="swal-form-col">
+    <div class="swal-form-row">
+      <label>标题</label>
+      <input id="fTitle" class="swal2-input" value="${v.title||''}" maxlength="32">
+    </div>
+    <div class="swal-form-row">
+      <label>客户</label>
+      <input id="fCus" class="swal2-input" value="${v.customer||''}" maxlength="32">
+    </div>
+    <div class="swal-form-row">
+      <label>计划日期</label>
+      <input id="fDate" type="date" class="swal2-input" value="${v.planDate||''}">
+    </div>
+    <div class="swal-form-row top-align">
+      <label>描述</label>
+      <textarea id="fDesc" class="swal2-textarea" rows="3" style="resize:vertical;">${v.desc||''}</textarea>
+    </div>
+  </div>
+`,
     confirmButtonText: '关闭',
     customClass:{popup:'swal2-popup-wide'}
   });
@@ -149,7 +158,12 @@ function submitVisit(id){
 function showFeedback(id){
   Swal.fire({
     title:'反馈',
-    html:`<div class="swal-form-row"><label>反馈内容</label><textarea id="fbInput" class="swal2-textarea" rows="3" style="resize:vertical;"></textarea></div>`,
+   html: `
+  <div class="swal-form-row top-align">
+    <label>反馈内容</label>
+    <textarea id="fbInput" class="swal2-textarea" rows="3" style="resize:vertical;"></textarea>
+  </div>
+`,
     showCancelButton:true,
     confirmButtonText:'提交反馈',
     cancelButtonText:'取消',

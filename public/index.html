@@ -55,10 +55,16 @@
     document.getElementById('btnRegister').onclick = () => {
       Swal.fire({
         title: '新用户注册',
-        html: `
-        <div class="swal-form-row"><label>用户名</label><input id="regUsername" class="swal2-input" autocomplete="off"></div>
-        <div class="swal-form-row"><label>密码</label><input id="regPassword" type="password" class="swal2-input" autocomplete="new-password"></div>
-        `,
+       html: `
+  <div class="swal-form-row">
+    <label>用户名</label>
+    <input id="regUsername" class="swal2-input" autocomplete="off">
+  </div>
+  <div class="swal-form-row">
+    <label>密码</label>
+    <input id="regPassword" type="password" class="swal2-input" autocomplete="new-password">
+  </div>
+`,
         confirmButtonText: '注册',
         cancelButtonText: '取消',
         showCancelButton: true,

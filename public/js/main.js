@@ -30,11 +30,20 @@ document.getElementById('btnLogout').onclick = () => {
 document.getElementById('btnChangePw').onclick = () => {
   Swal.fire({
     title: '更改密码',
-    html: `
-      <div class="swal-form-row"><label>当前密码</label><input id="currPw" type="password" class="swal2-input" autocomplete="current-password"></div>
-      <div class="swal-form-row"><label>新密码</label><input id="newPw" type="password" class="swal2-input" autocomplete="new-password"></div>
-      <div class="swal-form-row"><label>确认新密码</label><input id="confirmPw" type="password" class="swal2-input" autocomplete="new-password"></div>
-    `,
+   html: `
+  <div class="swal-form-row">
+    <label>当前密码</label>
+    <input id="currPw" type="password" class="swal2-input" autocomplete="current-password">
+  </div>
+  <div class="swal-form-row">
+    <label>新密码</label>
+    <input id="newPw" type="password" class="swal2-input" autocomplete="new-password">
+  </div>
+  <div class="swal-form-row">
+    <label>确认新密码</label>
+    <input id="confirmPw" type="password" class="swal2-input" autocomplete="new-password">
+  </div>
+`,
     showCancelButton: true,
     confirmButtonText: '更改',
     cancelButtonText: '取消',
