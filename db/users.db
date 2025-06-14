@@ -1,1 +1,3 @@
+{"_id":"3c5a62bc-7799-4485-905d-3340720ac0de","username":"1","password":"$2a$10$iwzLt90SQpkJYxiCz27QLefKH9rPTG39670wh4m4MwqADgKRlEZrO","role":"user","status":"active","superiorId":null}
+{"_id":"cec24d46-1a70-4b3c-b97b-140c537589cf","username":"2","password":"$2a$10$BB0vlKK6vP7GN3ZtTdt1Ue19BjPXX3VVSv/wakZaq97sqK2.cxoaS","role":"user","status":"active","superiorId":"3c5a62bc-7799-4485-905d-3340720ac0de"}
 {"_id":"d861f5fa-6f3d-4427-a501-e26361556682","username":"admin","password":"$2a$10$IeXc7..CzuNrzNYrW34FP.fKU4uUyUN1FOlkF9xZI4VEop8jPCZQu","role":"admin","status":"active","superiorId":null}

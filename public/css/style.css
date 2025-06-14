@@ -7,6 +7,7 @@ body {
   margin: 0;
   color: #eee;
 }
+
 main {
   flex: 1 0 auto;
   max-width: 980px;
@@ -18,6 +19,7 @@ main {
   width: 98%;
   min-height: 500px;
 }
+
 footer {
   flex-shrink: 0;
   height: 44px;
@@ -28,7 +30,9 @@ footer {
   font-size: 0.98em;
   border-top: 1px solid #2a2a2a;
   letter-spacing: 1px;
+  margin: 0;
 }
+
 header {
   background: #4CAF50;
   color: #fff;
@@ -39,10 +43,13 @@ header {
   border-bottom: 1px solid #222;
   box-shadow: 0 2px 8px rgba(0,0,0,0.13);
 }
+
 .logo { font-weight: 600; font-size: 1.2em; }
 .user-info { font-size: .95em; }
 .user-info .btn { margin-left: 1em; }
+
 nav { margin-bottom: 1.5em; }
+
 .nav-btn {
   background: #2196F3;
   color: #fff;
@@ -56,6 +63,7 @@ nav { margin-bottom: 1.5em; }
   min-width: 110px;
 }
 .nav-btn.active, .nav-btn:focus { background: #4CAF50; }
+
 section { display: none; }
 section.active { display: block; }
 
@@ -68,13 +76,24 @@ section.active { display: block; }
   margin-bottom: 3em;
   box-shadow: 0 2px 8px rgba(0,0,0,0.03);
 }
+
 .banner-title {
-  font-size: 2.3em;
+  font-size: 2.4em;
   font-weight: 700;
   letter-spacing: 2px;
 }
+
+.login-container {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
 .login-card {
   max-width: 390px;
+  width: 100%;
   margin: 2.2em auto 0;
   border-radius: 14px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.10);
@@ -82,27 +101,90 @@ section.active { display: block; }
   padding: 2.5em 2.5em 2em 2.5em;
   display: flex;
   flex-direction: column;
-  gap: 1.2em;
+  gap: 1.5em;
 }
-.login-title { font-weight:700;text-align:center;margin-bottom:1.3em;margin-top:0; color: #fff;}
-input, select, textarea {
-  width: 100%; padding: 0.7em 0.6em; border: 1.5px solid #444; border-radius: 8px;
-  margin-bottom: 1em; font-size: 1em; background: #181818; color: #fff; transition: border .2s;
+
+.login-title {
+  font-weight:700;
+  text-align:center;
+  margin-bottom:1.5em;
+  margin-top:0;
+  color: #fff;
 }
-input:focus, select:focus, textarea:focus { outline: none; border-color: #2196F3; background: #232323; }
-button.btn {
-  padding: 0.7em 2em; border: none; border-radius: 8px; font-size: 1em; cursor: pointer; font-weight: 500;
-  background: #4CAF50; color: #fff; transition: background 0.2s;
+
+.login-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1em;
+}
+
+.login-fields input {
+  width: 100%;
+  padding: 0.7em 0.6em;
+  border: 1.5px solid #444;
+  border-radius: 8px;
+  font-size: 1em;
+  background: #181818;
+  color: #fff;
+  transition: border .2s;
+  margin: 0;
   box-sizing: border-box;
 }
+
+.login-fields input:focus {
+  outline: none;
+  border-color: #2196F3;
+  background: #232323;
+}
+
+.login-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+  margin-top: 1.2em;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 0.7em 0.6em;
+  border: 1.5px solid #444;
+  border-radius: 8px;
+  margin-bottom: 1em;
+  font-size: 1em;
+  background: #181818;
+  color: #fff;
+  transition: border .2s;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #2196F3;
+  background: #232323;
+}
+
+button.btn {
+  padding: 0.7em 2em;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  font-weight: 500;
+  background: #4CAF50;
+  color: #fff;
+  transition: background 0.2s;
+  box-sizing: border-box;
+  /* 不设置width/margin */
+}
+
 .btn.primary { background: #4CAF50; }
 .btn.outlined { border: 1.5px solid #4CAF50; background: #232323; color: #4CAF50; }
-.btn.outlined:hover { background: #223822; }
-.btn.full { width: 100%; margin-top: 0.2em; }
+.btn.outlined:hover { background: #223822; color: #fff; }
+.btn.full { width: 100%; margin-top: 0; }
 .btn.danger { background: #F44336; }
 .btn.mini { padding: 0.4em 1.2em; font-size: 0.98em; }
 .btn:active, .btn:focus { background: #2196F3; }
 .btn[disabled] { background: #333; color: #888; cursor: not-allowed; }
+
 .card {
   background: #232323;
   border-radius: 12px;
@@ -186,8 +268,12 @@ button.btn {
 .stat-feedback { background: #183b22; color: #19c37d; }
 
 table {
-  width: 100%; border-collapse: collapse; margin: 1em 0;
-  background: #181818; font-size: 1.04em; color: #fff;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  background: #181818;
+  font-size: 1.04em;
+  color: #fff;
 }
 th, td {
   text-align: left;
@@ -248,11 +334,11 @@ textarea { min-height: 80px; background: #181818; color: #fff; border: 1.5px sol
   color: #fff !important;
   border: 1.5px solid #444 !important;
 }
+
 @media (max-width: 600px) {
   main { padding: 1em;}
-  .login-card { padding: 1.2em; }
+  .login-card { padding: 1.1em; }
+  .login-container { padding: 0 0.5em; }
   .visit-toolbar { flex-wrap: wrap; gap:0.4em; }
   footer { font-size:0.86em; height:38px; line-height:38px;}
 }
-
-
