@@ -1,7 +1,17 @@
 {
   "name": "visit-manager",
   "version": "1.0.0",
+  "description": "A customer visit management system for enterprise sales teams.",
+  "author": "GitHub Copilot",
+  "license": "MIT",
   "main": "server.js",
+    "keywords": [
+    "crm",
+    "visit",
+    "management",
+    "express",
+    "nodejs"
+  ],
   "scripts": {
     "start": "node server.js"
   },

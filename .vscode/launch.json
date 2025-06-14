@@ -8,7 +8,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "启动服务端",
             "skipFiles": [
                 "<node_internals>/**"
             ],
