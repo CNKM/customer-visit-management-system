@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const Datastore = require('nedb');
+const Datastore = require('@seald-io/nedb');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
