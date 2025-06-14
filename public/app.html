@@ -14,6 +14,7 @@
     <div class="logo">客户拜访管理系统</div>
     <div class="user-info">
       <span id="userName"></span>
+      <button id="btnChangePw" class="btn outlined mini" style="margin-left:1em;"><i class="fas fa-key"></i> 更改密码</button>
       <button id="btnLogout" class="btn danger mini"><i class="fas fa-sign-out-alt"></i> 退出</button>
     </div>
   </header>
@@ -21,11 +22,9 @@
     <nav>
       <button class="nav-btn" data-tab="visits">拜访记录</button>
       <button class="nav-btn" data-tab="users" id="navUsers" style="display:none">用户管理</button>
-      <button class="nav-btn" data-tab="pw">修改密码</button>
     </nav>
     <section id="tabVisits"></section>
     <section id="tabUsers" style="display:none"></section>
-    <section id="tabPw" style="display:none"></section>
   </main>
   <footer>
     © 2025 客户拜访管理系统
